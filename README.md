@@ -11,9 +11,10 @@ or [nightly](https://builds.bepinex.dev/projects/bepinex_be) ([file](https://bui
 5. Reference the interop files.  
 On rider it's done with Explorer -> Solution view, CheatersCheetahCheat -> Right click Dependencies -> Reference... -> Add from -> add files from `Cheaters Cheetah/BepInEx/interop`  
 Or do it manually, open `CheatersCheetahCheat.csproj` and change all the lines from `..\..\..\.steam\steam\ ...` to whatever it is on your system.
-6. maybe need to install nuget dependencies?
-7. `dotnet build` or click the build icon in rider
-8. copy or symlink `CheatersCheetahCheat/bin/Debug/net6.0/CheatersCheetahCheat.dll` to `Cheaters Cheetah/BepInEx/plugins/CheatersCheetahCheat.dll`
+Also do that with `ScriptEngine.csproj`
+7. Sometimes need to install nuget dependencies? **First do dotnet build, and check if it failed**
+8. `dotnet build` or click the build icon in rider
+9. copy or symlink `CheatersCheetahCheat/bin/Debug/net6.0/CheatersCheetahCheat.dll` to `Cheaters Cheetah/BepInEx/plugins/CheatersCheetahCheat.dll`
 
 
 # Notes
