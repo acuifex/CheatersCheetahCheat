@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+mkdir -p cmake-build
+cd cmake-build
+# -DCMAKE_RUNTIME_OUTPUT_DIRECTORY="~/.steam/steam/steamapps/common/Cheaters Cheetah/"
+x86_64-w64-mingw32-cmake .. -DCMAKE_BUILD_TYPE=Debug -DBUILD_STATIC=OFF
+make -j"$(grep -c "^processor" /proc/cpuinfo)"
