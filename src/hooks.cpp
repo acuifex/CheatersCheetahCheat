@@ -77,6 +77,13 @@ DEFINE_HOOK(Game::DataStructs::TextChatMessageSerializer, void, WriteTextChatMes
 	return WriteTextChatMessage_orig(writer, textChatMessage);
 }
 
+DEFINE_HOOK(Game::Mirror::NetworkTime, double, get_rtt, ()) {
+	if (Settings::PingSpoofer::enabled) {
+		return Settings::PingSpoofer::value;
+	}
+	return get_rtt_orig();
+}
+
 DEFINE_HOOK(Game::Steamworks::AppId_t, bool, op_Inequality,
 (uint32_t x, uint32_t y)) {
 	LOG("AppId_t op_Inequality %d %d", x, y);
@@ -126,6 +133,7 @@ bool InitializeHooks() {
 	ADD_HOOK(Game::Game_::Player::Aimbot::Ragebot::GetMinDamageThreshold, GetMinDamageThreshold);
 	ADD_HOOK(Game::Game_::Player::Aimbot::Ragebot::QueueHitChanceCalculation, QueueHitChanceCalculation);
 	ADD_HOOK(Game::DataStructs::TextChatMessageSerializer::WriteTextChatMessage, WriteTextChatMessage);
+	ADD_HOOK(Game::Mirror::NetworkTime::get_rtt, get_rtt);
 	for (auto& hook: hooks) {
 		if (hook.second->isHooked()) {
 			continue;

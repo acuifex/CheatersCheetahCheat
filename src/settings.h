@@ -43,4 +43,9 @@ namespace Settings
 	{
 		inline bool anonymousSenderEnabled = false;
 	}
+	namespace PingSpoofer
+	{
+		inline bool enabled = false;
+		inline double value = 1.337f;
+	}
 }

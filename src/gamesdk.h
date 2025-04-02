@@ -76,6 +76,7 @@ namespace Game {
 	DEFINE_GAME_ASSEMBLY(mscorlib);
 	DEFINE_GAME_ASSEMBLY(Heathen_Steamworks);
 	DEFINE_GAME_ASSEMBLY(com_rlabrecque_steamworks_net);
+	DEFINE_GAME_ASSEMBLY(Mirror);
 	namespace UnityEngine {
 		struct Rect_Fields {
 			float m_XMin;
@@ -99,6 +100,7 @@ namespace Game {
 			REGISTER_GAME_CLASS_METHOD(void, Label, (il2cpp::Il2CppString* text, il2cpp::Il2CppArray* options), 2);
 			REGISTER_GAME_CLASS_METHOD(bool, Toggle, (bool value, il2cpp::Il2CppString* text, il2cpp::Il2CppArray* options), 3);
 			REGISTER_GAME_CLASS_METHOD(bool, Button, (il2cpp::Il2CppString* text, il2cpp::Il2CppArray* options), 2);
+			REGISTER_GAME_CLASS_METHOD(il2cpp::Il2CppString*, TextField, (il2cpp::Il2CppString* text, il2cpp::Il2CppArray* options), 2);
 			REGISTER_GAME_CLASS_METHOD(float, HorizontalSlider, (float value, float leftValue, float rightValue, il2cpp::Il2CppArray* options), 4);
 			REGISTER_GAME_CLASS_METHOD(void, BeginHorizontal, (il2cpp::Il2CppArray* options), 1);
 			REGISTER_GAME_CLASS_METHOD(void, EndHorizontal, (), 0);
@@ -143,6 +145,10 @@ namespace Game {
 	namespace System::Runtime::InteropServices::Marshal {
 		REGISTER_GAME_CLASS(mscorlib, "System.Runtime.InteropServices", Marshal);
 		REGISTER_GAME_CLASS_METHOD(il2cpp::Il2CppObject*, GetDelegateForFunctionPointer, (uintptr_t ptr, il2cpp::Il2CppObject* t), 2);
+	}
+	namespace System::UInt32 {
+		REGISTER_GAME_CLASS(mscorlib, "System", UInt32);
+		REGISTER_GAME_CLASS_METHOD(bool, TryParse, (il2cpp::Il2CppString* s, uint32_t* result), 2);
 	}
 	namespace GlobalUI::TextChatComponent {
 		REGISTER_GAME_CLASS(Assembly_CSharp, "GlobalUI", TextChatComponent);
@@ -193,6 +199,11 @@ namespace Game {
 		REGISTER_GAME_CLASS(Assembly_CSharp, "Game.Player", GamePlayerClient);
 		REGISTER_GAME_CLASS_METHOD(void, CmdSendForceRoundEndRequestToServer, (il2cpp::Il2CppObject* this_), 0);
 		REGISTER_GAME_CLASS_METHOD(void, CmdSendLoadoutUpdateRequestToServer, (il2cpp::Il2CppObject* this_, int32_t loadoutIndex, bool ignoreGamePhase), 2);
+	}
+	namespace Mirror::NetworkTime {
+		REGISTER_GAME_CLASS(Mirror, "Mirror", NetworkTime);
+		REGISTER_GAME_CLASS_METHOD(double, get_rtt, (), 0);
+
 	}
 	namespace VoiceChat
 	{

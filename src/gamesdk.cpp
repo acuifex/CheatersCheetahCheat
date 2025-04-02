@@ -145,6 +145,7 @@ bool Game::Initialize() {
 	GAME_ASSEMBLY_INIT("mscorlib.dll", mscorlib)
 	GAME_ASSEMBLY_INIT("Heathen.Steamworks.dll", Heathen_Steamworks)
 	GAME_ASSEMBLY_INIT("com.rlabrecque.steamworks.net.dll", com_rlabrecque_steamworks_net)
+	GAME_ASSEMBLY_INIT("Mirror.dll", Mirror)
 
 	for (auto current = Game::RegisterGameClass::s_pBase; current != nullptr; current = current->m_pNext) {
 		ok &= current->Init();
