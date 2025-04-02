@@ -1,0 +1,28 @@
+#!/bin/bash
+
+width=1280
+height=720
+
+while getopts ":c" opt; do
+  case $opt in
+    c)
+      echo "-c was triggered, Parameter: $OPTARG" >&2
+      width=1920
+      height=1080
+      export WINEDLLOVERRIDES="winhttp.dll=n,b"
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
+done
+
+pushd "$HOME/.steam/steam/steamapps/common/Cheaters Cheetah"
+#export PROTON_LOG=1
+#protontricks-launch --appid 3438990 "./CheatersCheetah.exe" -screen-fullscreen 0 -screen-height "$height" -screen-width "$width"
+protontricks-launch --appid 3438990 "./CheatersCheetah.exe" 2>/dev/null

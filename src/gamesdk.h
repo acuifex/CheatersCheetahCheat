@@ -74,6 +74,8 @@ namespace Game {
 	DEFINE_GAME_ASSEMBLY(UnityEngine_CoreModule);
 	DEFINE_GAME_ASSEMBLY(Assembly_CSharp);
 	DEFINE_GAME_ASSEMBLY(mscorlib);
+	DEFINE_GAME_ASSEMBLY(Heathen_Steamworks);
+	DEFINE_GAME_ASSEMBLY(com_rlabrecque_steamworks_net);
 	namespace UnityEngine {
 		struct Rect_Fields {
 			float m_XMin;
@@ -159,6 +161,10 @@ namespace Game {
 		REGISTER_GAME_CLASS_METHOD(bool, ShouldActivateAimLock,
 		                           (void* aimPoints, int32_t* aimPointIndex,
 			                           il2cpp::Il2CppObject* config, bool manual), 4);
+	}
+	namespace Steamworks::AppId_t {
+		REGISTER_GAME_CLASS(com_rlabrecque_steamworks_net, "Steamworks", AppId_t);
+		REGISTER_GAME_CLASS_METHOD(bool, op_Inequality, (uint32_t x, uint32_t y), 2);
 	}
 	namespace VoiceChat
 	{

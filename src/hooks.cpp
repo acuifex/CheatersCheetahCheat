@@ -51,6 +51,12 @@ DEFINE_HOOK(Game::Game_::Player::Aimbot::Ragebot, bool, ShouldActivateAimLock,
 	return aimlocked;
 }
 
+DEFINE_HOOK(Game::Steamworks::AppId_t, bool, op_Inequality,
+(uint32_t x, uint32_t y)) {
+	LOG("AppId_t op_Inequality %d %d", x, y);
+	return false; // allow to launch the game as a spacewar appid.
+}
+
 template<typename T>
 bool HookManagedFunction(il2cpp::MethodInfo* methodInfo, T hook, T* original) {
 	if (methodInfo == nullptr)
@@ -63,6 +69,21 @@ bool HookManagedFunction(il2cpp::MethodInfo* methodInfo, T hook, T* original) {
 }
 
 std::vector<std::pair<const char*, std::unique_ptr<PLH::x64Detour>>> hooks;
+#define ADD_HOOK(what, to) \
+hooks.emplace_back(#what, std::make_unique<PLH::x64Detour>( \
+(uint64_t) what, \
+(uint64_t) to##_hook, \
+(uint64_t*) &to##_orig))
+
+bool InitializeHooksEarly() {
+	auto& op_InequalityHooker = ADD_HOOK(Game::Steamworks::AppId_t::op_Inequality, op_Inequality);
+	if (!op_InequalityHooker.second->hook()) {
+		LOG("op_Inequality hook failed");
+		return false;
+	}
+	LOG("op_Inequality ok");
+	return true;
+}
 
 bool InitializeHooks() {
 	using namespace Game;
@@ -72,29 +93,14 @@ bool InitializeHooks() {
 	ok &= HookManagedFunction(SkateMenu::ImguiManager::Update_info, (SkateMenu::ImguiManager::Update_t) Update_hook,
 	                    &Update_orig);
 	//	HookManagedFunction(Game::DataStructs::CheatModeExtensions::IsFeatureEnabled_info, (Game::DataStructs::CheatModeExtensions::IsFeatureEnabled_t)IsFeatureEnabled_hook, &IsFeatureEnabled_orig);
-#define ADD_HOOK(what, to) \
-	hooks.emplace_back(#what, std::make_unique<PLH::x64Detour>( \
-						   (uint64_t) what, \
-						   (uint64_t) to##_hook, \
-						   (uint64_t*) &to##_orig))
 	ADD_HOOK(DataStructs::CheatModeExtensions::IsFeatureEnabled, IsFeatureEnabled);
 	ADD_HOOK(Game::VoiceChat::VoiceChatManager::UpdateBroadcastMode, UpdateBroadcastMode);
 	ADD_HOOK(Game::Game_::Player::Aimbot::Ragebot::ApplyRagebot, ApplyRagebot);
 	ADD_HOOK(Game::Game_::Player::Aimbot::Ragebot::ShouldActivateAimLock, ShouldActivateAimLock);
-	// hooks.emplace_back("IsFeatureEnabled", std::make_unique<PLH::x64Detour>(
-	// 	                   (uint64_t) Game::DataStructs::CheatModeExtensions::IsFeatureEnabled,
-	// 	                   (uint64_t) IsFeatureEnabled_hook,
-	// 	                   (uint64_t*) &IsFeatureEnabled_orig));
-	// hooks.emplace_back("UpdateBroadcastMode", std::make_unique<PLH::x64Detour>(
-	// 	                   (uint64_t) Game::VoiceChat::VoiceChatManager::UpdateBroadcastMode,
-	// 	                   (uint64_t) UpdateBroadcastMode_hook,
-	// 	                   (uint64_t*) &UpdateBroadcastMode_orig));
-	// static PLH::x64Detour IsFeatureEnabledHooker((uint64_t) Game::DataStructs::CheatModeExtensions::IsFeatureEnabled,
-	//                                              (uint64_t) IsFeatureEnabled_hook,
-	//                                              (uint64_t*)&IsFeatureEnabled_orig);
-	// static PLH::x64Detour UpdateBroadcastModeHooker((uint64_t)Game::VoiceChat::VoiceChatManager::UpdateBroadcastMode, (uint64_t)UpdateBroadcastMode_hook,
-	// 										   (uint64_t*)&UpdateBroadcastMode_orig);
 	for (auto& hook: hooks) {
+		if (hook.second->isHooked()) {
+			continue;
+		}
 		if (hook.second->hook()) {
 			LOG("%s ok", hook.first);
 		} else {
@@ -102,13 +108,5 @@ bool InitializeHooks() {
 			ok = false;
 		}
 	}
-	// if (!IsFeatureEnabledHooker.hook())
-	// 	LOG("IsFeatureEnabled hook failed");
-	// else
-	// 	LOG("IsFeatureEnabled ok: %p", IsFeatureEnabled_orig);
-	// if (!UpdateBroadcastModeHooker.hook())
-	// 	LOG("UpdateBroadcastModeHooker hook failed");
-	// else
-	// 	LOG("UpdateBroadcastModeHooker ok: %p", IsFeatureEnabled_orig);
 	return ok;
 }

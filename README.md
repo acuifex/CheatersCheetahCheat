@@ -9,6 +9,7 @@ Or CCC for short, pronounced KKK. Now in C++!
 2. `./build-static` or `./build` but then you'll need to copy these libraries to game root:
   `libgcc_s_seh-1.dll libssp-0.dll libstdc++-6.dll libwinpthread-1.dll`
 3. `cp ./build/winhttp.dll ~/.steam/steam/steamapps/common/Cheaters Cheetah/` (or set `-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=...`)
+4. `WINEDLLOVERRIDES="winhttp.dll=n,b" %command%` into the game's launch options
 
 It also works alongside bepinex/doorstop if you rename it to `winhttp_alt.dll` (or set `-DCCC_PROXY_LIB_NAME="winhttp_alt"`)
 
@@ -47,3 +48,16 @@ Credits to:
 * Probably some lads on unknowncheats for something
 * [ByNameModding](https://github.com/ByNameModding/BNM-Android) is an interesting reference
 * Il2CppInspectorPro for headers (not a submodule because holy shit 1.4 GiB of unit tests)
+
+## Launching a second game instance as a spacewar appid
+1. `firejail --name=steam --private=/mnt/hdd/steamfirejail --private-dev --private-tmp --net=enp4s0 steam` (replace `enp4s0` with your own network interface and `/mnt/hdd/steamfirejail` with your desired home sandbox folder)
+2. Install and launch the game from an account that owns it
+3. Switch to another account (doesn't need to own the game)
+4. `cp ./launchgame /mnt/hdd/steamfirejail`
+5. `echo -n 480 > "/mnt/hdd/steamfirejail/.local/share/Steam/steamapps/common/Cheaters Cheetah/steam_appid.txt"`
+6. Install CCC into the sandboxed game instance otherwise it'll exit on start with appid mismatch error.
+7. `firejail --join=steam bash ./launchgame -c`
+
+Launching primary game instance as a spacewar appid can be done by putting `480` into `steam_appid.txt` in the game folder, and `./launchgame -c`
+
+This can be useful for checking your exploits and cheats from host's POV

@@ -143,6 +143,8 @@ bool Game::Initialize() {
 	GAME_ASSEMBLY_INIT("UnityEngine.CoreModule.dll", UnityEngine_CoreModule)
 	GAME_ASSEMBLY_INIT("Assembly-CSharp.dll", Assembly_CSharp)
 	GAME_ASSEMBLY_INIT("mscorlib.dll", mscorlib)
+	GAME_ASSEMBLY_INIT("Heathen.Steamworks.dll", Heathen_Steamworks)
+	GAME_ASSEMBLY_INIT("com.rlabrecque.steamworks.net.dll", com_rlabrecque_steamworks_net)
 
 	for (auto current = Game::RegisterGameClass::s_pBase; current != nullptr; current = current->m_pNext) {
 		ok &= current->Init();

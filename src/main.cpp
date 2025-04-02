@@ -12,6 +12,18 @@
 #include "hooks.h"
 
 
+static bool s_bGameInitialized = false;
+void EnvironmentEarly() {
+	il2cpp::il2cpp_thread_attach(il2cpp::il2cpp_domain_get());
+	if (!Game::Initialize()) {
+		LOG("Some functionality failed to load");
+		s_bGameInitialized = false;
+		return;
+	}
+	s_bGameInitialized = true;
+	InitializeHooksEarly();
+}
+
 // we got a reasonably ready environment now.
 void EnvironmentReady() {
 	using namespace il2cpp;
@@ -21,9 +33,7 @@ void EnvironmentReady() {
 	// for managed pointers, and pins them in place so they're not copied away or collected while we're working.
 	// idk if il2cpp does any of that, or if i'm correct at all.
 	// https://www.mono-project.com/docs/advanced/garbage-collector/sgen/
-	il2cpp_thread_attach(il2cpp_domain_get());
-	if (!Game::Initialize()) {
-		LOG("Some functionality failed to load");
+	if (!s_bGameInitialized) {
 		return;
 	}
 	InitializeHooks();
@@ -54,6 +64,10 @@ NOINLINE il2cpp::Il2CppObject* __stdcall il2cpp_runtime_invoke_hook(const il2cpp
 		auto name = il2cpp::il2cpp_method_get_name(method);
 		if (strcmp(name, "Internal_ActiveSceneChanged") == 0) {
 			LOG("il2cpp_runtime_invoke_hook %s", name);
+			if (scene_changed == 0) {
+				LOG("calling EnvironmentEarly");
+				EnvironmentEarly();
+			}
 			// bepinex i think does first (0-th) one? second seems like a more ready environment.
 			// TODO: probably should create a monobehaviour object instead, and do the calls from its callbacks, or hook some start/awake func
 			if (scene_changed == 1) {
