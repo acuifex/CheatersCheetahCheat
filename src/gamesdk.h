@@ -98,6 +98,7 @@ namespace Game {
 			REGISTER_GAME_CLASS_METHOD(Rect_o*, Window, (Rect_o* return_storage_, int32_t id, Rect_o* clientRect, il2cpp::Il2CppObject* func, il2cpp::Il2CppString* title, il2cpp::Il2CppArray* options), 5);
 			REGISTER_GAME_CLASS_METHOD(void, Label, (il2cpp::Il2CppString* text, il2cpp::Il2CppArray* options), 2);
 			REGISTER_GAME_CLASS_METHOD(bool, Toggle, (bool value, il2cpp::Il2CppString* text, il2cpp::Il2CppArray* options), 3);
+			REGISTER_GAME_CLASS_METHOD(bool, Button, (il2cpp::Il2CppString* text, il2cpp::Il2CppArray* options), 2);
 			REGISTER_GAME_CLASS_METHOD(float, HorizontalSlider, (float value, float leftValue, float rightValue, il2cpp::Il2CppArray* options), 4);
 			REGISTER_GAME_CLASS_METHOD(void, BeginHorizontal, (il2cpp::Il2CppArray* options), 1);
 			REGISTER_GAME_CLASS_METHOD(void, EndHorizontal, (), 0);
@@ -165,6 +166,25 @@ namespace Game {
 	namespace Steamworks::AppId_t {
 		REGISTER_GAME_CLASS(com_rlabrecque_steamworks_net, "Steamworks", AppId_t);
 		REGISTER_GAME_CLASS_METHOD(bool, op_Inequality, (uint32_t x, uint32_t y), 2);
+	}
+	namespace DataStructs {
+		struct SerializableTextChatMessage_Fields {
+			il2cpp::Il2CppObject* sender;
+			il2cpp::Il2CppString* message;
+			uint8_t type;
+		};
+		// actually a struct with 1 member.
+		typedef SerializableTextChatMessage_Fields SerializableTextChatMessage_o;
+	}
+	namespace PlayerInstance {
+		REGISTER_GAME_CLASS(Assembly_CSharp, "", PlayerInstance);
+		REGISTER_GAME_CLASS_METHOD(il2cpp::Il2CppObject*, get_LocalInstance, (), 0);
+		REGISTER_GAME_CLASS_METHOD(void, CmdSendChatToServer, (il2cpp::Il2CppObject* this_, DataStructs::SerializableTextChatMessage_o* message), 1);
+	}
+	namespace Game_::Player::GamePlayerClient {
+		REGISTER_GAME_CLASS(Assembly_CSharp, "Game.Player", GamePlayerClient);
+		REGISTER_GAME_CLASS_METHOD(void, CmdSendForceRoundEndRequestToServer, (il2cpp::Il2CppObject* this_), 0);
+		REGISTER_GAME_CLASS_METHOD(void, CmdSendLoadoutUpdateRequestToServer, (il2cpp::Il2CppObject* this_, int32_t loadoutIndex, bool ignoreGamePhase), 2);
 	}
 	namespace VoiceChat
 	{

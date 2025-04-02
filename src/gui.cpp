@@ -1,8 +1,10 @@
 #include "gui.h"
 #include "gamesdk.h"
 #include "settings.h"
-#include "Hacks/voicespammer.h"
 #include <format>
+
+#include "Hacks/voicespammer.h"
+#include "Hacks/chatlagexploit.h"
 
 // todo: nuke all of this in favour of imgui
 using namespace Game::UnityEngine;
@@ -23,6 +25,9 @@ void DoWindow() {
 	Settings::VoiceSpammer::enabled = GUILayout::Toggle(Settings::VoiceSpammer::enabled, "Open Microphone"_il2cpp, options);
 	Settings::BypassLegit::enabled = GUILayout::Toggle(Settings::BypassLegit::enabled, "Bypass Legit"_il2cpp, options);
 	Settings::AutoFire::enabled = GUILayout::Toggle(Settings::AutoFire::enabled, "Aimbot AutoFire"_il2cpp, options);
+	if (GUILayout::Button("Chat Lag/Crash Exploit"_il2cpp, options)) {
+		ChatLagExploit::Invoke();
+	}
 
 	GUILayout::Label("Hi LWSS!"_il2cpp, options);
 }
