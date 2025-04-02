@@ -25,6 +25,11 @@ void DoWindow() {
 	Settings::VoiceSpammer::enabled = GUILayout::Toggle(Settings::VoiceSpammer::enabled, "Open Microphone"_il2cpp, options);
 	Settings::BypassLegit::enabled = GUILayout::Toggle(Settings::BypassLegit::enabled, "Bypass Legit"_il2cpp, options);
 	Settings::AutoFire::enabled = GUILayout::Toggle(Settings::AutoFire::enabled, "Aimbot AutoFire"_il2cpp, options);
+	GUILayout::BeginHorizontal(options);
+	Settings::AutoFire::mindmg = GUILayout::HorizontalSlider(Settings::AutoFire::mindmg, 1.f, 100.f, options);
+	std::string mindmgstr = std::format("{} hp", int(Settings::AutoFire::mindmg));
+	GUILayout::Label(il2cpp::il2cpp_string_new_len(mindmgstr.c_str(), mindmgstr.size()), options);
+	GUILayout::EndHorizontal();
 	if (GUILayout::Button("Chat Lag/Crash Exploit"_il2cpp, options)) {
 		ChatLagExploit::Invoke();
 	}

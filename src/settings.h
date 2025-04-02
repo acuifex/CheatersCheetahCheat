@@ -37,5 +37,6 @@ namespace Settings
 	namespace AutoFire
 	{
 		inline bool enabled = false;
+		inline int mindmg = 30;
 	}
 }

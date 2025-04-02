@@ -31,13 +31,15 @@ DEFINE_HOOK(Game::VoiceChat::VoiceChatManager, void, UpdateBroadcastMode, (Game:
 		UpdateBroadcastMode_orig(this_);
 }
 
-static bool aimlocked = false;
+static bool s_aimlocked = false;
+static bool s_willGetConsumed = false;
 DEFINE_HOOK(Game::Game_::Player::Aimbot::Ragebot, void*, ApplyRagebot,
 (void* return_storage_, void* moveData, bool willGetConsumed, bool willGetConsumedIfPrimaryDown, bool* overwritePrimaryDown)){
+	s_willGetConsumed = willGetConsumed;
 	if (Settings::AutoFire::enabled) {
-		aimlocked = false;
+		s_aimlocked = false;
 		void* ret = ApplyRagebot_orig(return_storage_, moveData, willGetConsumedIfPrimaryDown, willGetConsumedIfPrimaryDown, overwritePrimaryDown);
-		*overwritePrimaryDown = aimlocked;
+		*overwritePrimaryDown = s_aimlocked;
 		return ret;
 	}
 	return ApplyRagebot_orig(return_storage_, moveData, willGetConsumed, willGetConsumedIfPrimaryDown, overwritePrimaryDown);
@@ -45,11 +47,26 @@ DEFINE_HOOK(Game::Game_::Player::Aimbot::Ragebot, void*, ApplyRagebot,
 
 DEFINE_HOOK(Game::Game_::Player::Aimbot::Ragebot, bool, ShouldActivateAimLock,
 (void* aimPoints, int32_t* aimPointIndex, il2cpp::Il2CppObject* config, bool manual)) {
-	if (Settings::AutoFire::enabled) {
+	if (Settings::AutoFire::enabled && !s_willGetConsumed) {
 		manual = false;
 	}
-	aimlocked = ShouldActivateAimLock_orig(aimPoints, aimPointIndex, config, manual);
-	return aimlocked;
+	s_aimlocked = ShouldActivateAimLock_orig(aimPoints, aimPointIndex, config, manual);
+	return s_aimlocked;
+}
+
+DEFINE_HOOK(Game::Game_::Player::Aimbot::Ragebot, int32_t, GetMinDamageThreshold,
+(void* aimbot, bool manual)) {
+	if (manual)
+		return 1;
+
+	return Settings::AutoFire::mindmg;
+}
+
+DEFINE_HOOK(Game::Game_::Player::Aimbot::Ragebot, void, QueueHitChanceCalculation,
+(void* origin, void* aimPoints, int32_t minDamage, float spreadAngle, uint8_t power)) {
+	if (!s_willGetConsumed) // if not manually activated
+		minDamage = Settings::AutoFire::mindmg;
+	return QueueHitChanceCalculation_orig(origin, aimPoints, minDamage, spreadAngle, power);
 }
 
 DEFINE_HOOK(Game::Steamworks::AppId_t, bool, op_Inequality,
@@ -98,6 +115,8 @@ bool InitializeHooks() {
 	ADD_HOOK(Game::VoiceChat::VoiceChatManager::UpdateBroadcastMode, UpdateBroadcastMode);
 	ADD_HOOK(Game::Game_::Player::Aimbot::Ragebot::ApplyRagebot, ApplyRagebot);
 	ADD_HOOK(Game::Game_::Player::Aimbot::Ragebot::ShouldActivateAimLock, ShouldActivateAimLock);
+	ADD_HOOK(Game::Game_::Player::Aimbot::Ragebot::GetMinDamageThreshold, GetMinDamageThreshold);
+	ADD_HOOK(Game::Game_::Player::Aimbot::Ragebot::QueueHitChanceCalculation, QueueHitChanceCalculation);
 	for (auto& hook: hooks) {
 		if (hook.second->isHooked()) {
 			continue;

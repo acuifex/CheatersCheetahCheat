@@ -162,6 +162,10 @@ namespace Game {
 		REGISTER_GAME_CLASS_METHOD(bool, ShouldActivateAimLock,
 		                           (void* aimPoints, int32_t* aimPointIndex,
 			                           il2cpp::Il2CppObject* config, bool manual), 4);
+		REGISTER_GAME_CLASS_METHOD(void, QueueHitChanceCalculation,
+		                           (void* origin, void* aimPoints, int32_t minDamage, float spreadAngle, uint8_t power),
+		                           5);
+		REGISTER_GAME_CLASS_METHOD(int32_t, GetMinDamageThreshold, (void* aimbot, bool manual), 2);
 	}
 	namespace Steamworks::AppId_t {
 		REGISTER_GAME_CLASS(com_rlabrecque_steamworks_net, "Steamworks", AppId_t);
