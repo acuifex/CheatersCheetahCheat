@@ -39,4 +39,8 @@ namespace Settings
 		inline bool enabled = false;
 		inline int mindmg = 30;
 	}
+	namespace ChatSpoofer
+	{
+		inline bool anonymousSenderEnabled = false;
+	}
 }

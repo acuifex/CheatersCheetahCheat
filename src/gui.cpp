@@ -16,6 +16,7 @@ static Rect_o dragWindowRect {0, 0, 1000, 20};
 void DoWindow() {
 	GUI::DragWindow(&dragWindowRect);
 	auto options = CheatGUI::GetEmptyGUILayoutOptions();
+	Settings::ChatSpoofer::anonymousSenderEnabled = GUILayout::Toggle(Settings::ChatSpoofer::anonymousSenderEnabled, "Anonamize Chat Sender"_il2cpp, options);
 	Settings::Spammer::enabled = GUILayout::Toggle(Settings::Spammer::enabled, "Chat Spammer"_il2cpp, options);
 	GUILayout::BeginHorizontal(options);
 	Settings::Spammer::delay = GUILayout::HorizontalSlider(Settings::Spammer::delay, 0.1f, 5.f, options);

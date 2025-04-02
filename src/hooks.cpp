@@ -69,6 +69,14 @@ DEFINE_HOOK(Game::Game_::Player::Aimbot::Ragebot, void, QueueHitChanceCalculatio
 	return QueueHitChanceCalculation_orig(origin, aimPoints, minDamage, spreadAngle, power);
 }
 
+DEFINE_HOOK(Game::DataStructs::TextChatMessageSerializer, void, WriteTextChatMessage,
+(void* writer, Game::DataStructs::SerializableTextChatMessage_o* textChatMessage)) {
+	if (Settings::ChatSpoofer::anonymousSenderEnabled) {
+		textChatMessage->sender = nullptr;
+	}
+	return WriteTextChatMessage_orig(writer, textChatMessage);
+}
+
 DEFINE_HOOK(Game::Steamworks::AppId_t, bool, op_Inequality,
 (uint32_t x, uint32_t y)) {
 	LOG("AppId_t op_Inequality %d %d", x, y);
@@ -117,6 +125,7 @@ bool InitializeHooks() {
 	ADD_HOOK(Game::Game_::Player::Aimbot::Ragebot::ShouldActivateAimLock, ShouldActivateAimLock);
 	ADD_HOOK(Game::Game_::Player::Aimbot::Ragebot::GetMinDamageThreshold, GetMinDamageThreshold);
 	ADD_HOOK(Game::Game_::Player::Aimbot::Ragebot::QueueHitChanceCalculation, QueueHitChanceCalculation);
+	ADD_HOOK(Game::DataStructs::TextChatMessageSerializer::WriteTextChatMessage, WriteTextChatMessage);
 	for (auto& hook: hooks) {
 		if (hook.second->isHooked()) {
 			continue;

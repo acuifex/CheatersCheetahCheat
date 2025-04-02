@@ -179,6 +179,10 @@ namespace Game {
 		};
 		// actually a struct with 1 member.
 		typedef SerializableTextChatMessage_Fields SerializableTextChatMessage_o;
+		namespace TextChatMessageSerializer {
+			REGISTER_GAME_CLASS(Assembly_CSharp, "DataStructs", TextChatMessageSerializer);
+			REGISTER_GAME_CLASS_METHOD(void, WriteTextChatMessage, (void* writer, SerializableTextChatMessage_o* textChatMessage), 2);
+		}
 	}
 	namespace PlayerInstance {
 		REGISTER_GAME_CLASS(Assembly_CSharp, "", PlayerInstance);
