@@ -35,6 +35,7 @@ static bool aimlocked = false;
 DEFINE_HOOK(Game::Game_::Player::Aimbot::Ragebot, void*, ApplyRagebot,
 (void* return_storage_, void* moveData, bool willGetConsumed, bool willGetConsumedIfPrimaryDown, bool* overwritePrimaryDown)){
 	if (Settings::AutoFire::enabled) {
+		aimlocked = false;
 		void* ret = ApplyRagebot_orig(return_storage_, moveData, willGetConsumedIfPrimaryDown, willGetConsumedIfPrimaryDown, overwritePrimaryDown);
 		*overwritePrimaryDown = aimlocked;
 		return ret;
