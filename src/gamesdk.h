@@ -189,6 +189,12 @@ namespace Game {
 			REGISTER_GAME_CLASS(Assembly_CSharp, "DataStructs", TextChatMessageSerializer);
 			REGISTER_GAME_CLASS_METHOD(void, WriteTextChatMessage, (void* writer, SerializableTextChatMessage_o* textChatMessage), 2);
 		}
+		namespace PlayerPing {
+			REGISTER_GAME_CLASS(Assembly_CSharp, "DataStructs", PlayerPing);
+			// void* might be wrong but whatever
+			DEFINE_GAME_CLASS_METHOD(void, ctor, (void* this_, double rtt));
+			inline RegisterGameClassMethodArgc ctorRegistrator(klassRegistrator, &ctor_info, (il2cpp::Il2CppMethodPointer*)&ctor, ".ctor", 1);
+		}
 	}
 	namespace PlayerInstance {
 		REGISTER_GAME_CLASS(Assembly_CSharp, "", PlayerInstance);
