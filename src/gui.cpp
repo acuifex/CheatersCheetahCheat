@@ -5,6 +5,7 @@
 
 #include "Hacks/voicespammer.h"
 #include "Hacks/chatlagexploit.h"
+#include "Hacks/compressedpacketinflateexploit.h"
 
 // todo: nuke all of this in favour of imgui
 using namespace Game::UnityEngine;
@@ -46,6 +47,10 @@ void DoWindow() {
 
 	if (GUILayout::Button("Chat Lag/Crash Exploit"_il2cpp, options)) {
 		ChatLagExploit::Invoke();
+	}
+	GUILayout::Label("Inflate needs a lot runs to crash due to mirror packet size limitations. Each invoke leaks ~512 MiB of memory on host."_il2cpp, options);
+	if (GUILayout::Button("Packet Inflate Exploit"_il2cpp, options)) {
+		CompressedPacketInflateExploit::Invoke();
 	}
 
 	GUILayout::Label("Hi LWSS!"_il2cpp, options);

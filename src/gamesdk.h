@@ -150,6 +150,9 @@ namespace Game {
 		REGISTER_GAME_CLASS(mscorlib, "System", UInt32);
 		REGISTER_GAME_CLASS_METHOD(bool, TryParse, (il2cpp::Il2CppString* s, uint32_t* result), 2);
 	}
+	namespace System::Byte {
+		REGISTER_GAME_CLASS(mscorlib, "System", Byte);
+	}
 	namespace GlobalUI::TextChatComponent {
 		REGISTER_GAME_CLASS(Assembly_CSharp, "GlobalUI", TextChatComponent);
 		REGISTER_GAME_CLASS_METHOD(void, OnMessageSubmit, (il2cpp::Il2CppObject* this_, il2cpp::Il2CppString* message), 1);
@@ -209,7 +212,23 @@ namespace Game {
 	namespace Mirror::NetworkTime {
 		REGISTER_GAME_CLASS(Mirror, "Mirror", NetworkTime);
 		REGISTER_GAME_CLASS_METHOD(double, get_rtt, (), 0);
-
+	}
+	namespace Mirror::NetworkWriterPool {
+		REGISTER_GAME_CLASS(Mirror, "Mirror", NetworkWriterPool);
+		REGISTER_GAME_CLASS_METHOD(il2cpp::Il2CppObject*, Get, (), 0);
+		REGISTER_GAME_CLASS_METHOD(void, Return, (il2cpp::Il2CppObject* writer), 1);
+	}
+	namespace Mirror::NetworkWriter {
+		REGISTER_GAME_CLASS(Mirror, "Mirror", NetworkWriter);
+		REGISTER_GAME_CLASS_METHOD(void, WriteByte, (il2cpp::Il2CppObject* this_, uint8_t value), 1);
+		REGISTER_GAME_CLASS_METHOD(void, WriteBytes, (il2cpp::Il2CppObject* this_, il2cpp::Il2CppArray* array, int32_t offset, int32_t count), 3);
+	}
+	namespace Mirror::NetworkBehaviour {
+		REGISTER_GAME_CLASS(Mirror, "Mirror", NetworkBehaviour);
+		REGISTER_GAME_CLASS_METHOD(void, SendCommandInternal,
+		                           (il2cpp::Il2CppObject* this_, il2cpp::Il2CppString *functionFullName,
+			                           int32_t functionHashCode, il2cpp::Il2CppObject* writer, int32_t channelId,
+			                           bool requiresAuthority), 5);
 	}
 	namespace VoiceChat
 	{
